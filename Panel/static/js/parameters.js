@@ -1,6 +1,11 @@
 $(document).ready(function() {
 	var pathname = window.location.pathname;
 	console.log('Path name:' + pathname);
+
+    $( function() {
+    	$( "#start_date" ).datepicker();
+    	$( "#end_date" ).datepicker();
+  	} );
 	//window.alert(pathname)
 
 	$( "#genRealTime" ).click(function() {
@@ -96,21 +101,64 @@ $(document).ready(function() {
 
 
 
+	// $( "#genHistTime" ).click(function() {
+	//   texto = $('select#histTimeStores').val().join()
+	//   time = $('select#histTime').text()
+	//   alert("eu vou a luta"); 
+	//   alert(texto);  
+	//   alert(time);    
+	//   $.post( "/historico", { selected_stores: texto, time: time });
+
+ //     $('#tab2').find('img').fadeOut(1000);
+ //      //$('img').attr('src', $('img').attr('src') + '?' + Math.random());
+
+ //      $('#tab2').find('img').each(function(){
+ //      		$(this).attr('src', $(this).attr('src') + '?' + Math.random());
+ //    	});
+ //      $('#tab2').find('img').fadeIn(1000);
+	// });
+
+
 	$( "#genHistTime" ).click(function() {
 	  texto = $('select#histTimeStores').val().join()
-	  time = $('select#histTime').text()
-	  alert("eu vou a luta"); 
-	  alert(texto);  
-	  alert(time);    
-	  $.post( "/historico", { selected_stores: texto, time: time });
+	  start = $('#start_date').val()
+	  end = $('#end_date').val()
 
-     $('#tab2').find('img').fadeOut(1000);
-      //$('img').attr('src', $('img').attr('src') + '?' + Math.random());
+	  $.post("/historical", { selected_stores: texto, start_date: start, end_date: end}, function(response) {
+ 		
+  		if(!response.valid_hist) {
+  			alert("Consulta sem retorno!");
+	      $('img').fadeOut(150);
+		  $('#tab2').find('img').each(function(){
+		  		$(this).attr('src', "static/images/wally.jpg");
+			});
+		  $('img').fadeIn(150);
+  		}
+  		else {
 
-      $('#tab2').find('img').each(function(){
-      		$(this).attr('src', $(this).attr('src') + '?' + Math.random());
-    	});
-      $('#tab2').find('img').fadeIn(1000);
+	  		   $("#histTimeGraph1").attr('src', response.graph1_hist);
+  		 	   $("#histTimeGraph2").attr('src', response.graph2_hist);
+  		 	   $("#histTimeGraph3").attr('src', response.graph3_hist);
+  		 	   $("#max_hist").text(response.descriptive_dict_hist.max);
+  		 	   $("#max_time_hist").text(response.descriptive_dict_hist.max_time);
+  		 	   $("#unique_guests_hist").text(response.descriptive_dict_hist.unique_guests);
+
+  		 	   if(!$("#tab2_content").is(":visible")) 
+  		 	   		$("#tab2_content").show()
+
+
+		  $('#tab3').find('img').each(function(){
+		  	$(this).fadeOut(150, function(){
+  					$(this).attr('src', $(this).attr('src') + '?' + Math.random()).bind('onreadystatechange load', function(){
+     					if (this.complete) $(this).fadeIn(800);
+ 					 });
+					});
+			});
+  		}
+	}, 'json');
+
+
+
 	});
 
 });
