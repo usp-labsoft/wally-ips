@@ -89,15 +89,15 @@ $(document).ready(function() {
     	return $("#TabList").tabs('option', 'selected');
 	}
 
-	$( "#tab2" ).click(function() {
-		//$.post( "/historico", { selected_stores: texto, time: "2pm" });
+	// $( "#tab2" ).click(function() {
+	// 	//$.post( "/historico", { selected_stores: texto, time: "2pm" });
 
-	});
+	// });
 
-	$("#tab2").on("click", function() {
-		aqui = getSelectedTabIndex()
- 		alert(aqui);
-		});
+	// $("#tab2").on("click", function() {
+	// 	aqui = getSelectedTabIndex()
+ // 		alert(aqui);
+	// 	});
 
 
 
@@ -129,7 +129,7 @@ $(document).ready(function() {
   		if(!response.valid_hist) {
   			alert("Consulta sem retorno!");
 	      $('img').fadeOut(150);
-		  $('#tab2').find('img').each(function(){
+		  $('#tab3').find('img').each(function(){
 		  		$(this).attr('src', "static/images/wally.jpg");
 			});
 		  $('img').fadeIn(150);
@@ -143,8 +143,8 @@ $(document).ready(function() {
   		 	   $("#max_time_hist").text(response.descriptive_dict_hist.max_time);
   		 	   $("#unique_guests_hist").text(response.descriptive_dict_hist.unique_guests);
 
-  		 	   if(!$("#tab2_content").is(":visible")) 
-  		 	   		$("#tab2_content").show()
+  		 	   if(!$("#tab3_content").is(":visible")) 
+  		 	   		$("#tab3_content").show()
 
 
 		  $('#tab3').find('img').each(function(){
